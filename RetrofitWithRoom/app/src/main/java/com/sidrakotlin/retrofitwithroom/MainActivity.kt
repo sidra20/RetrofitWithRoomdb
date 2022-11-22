@@ -26,9 +26,11 @@ class MainActivity : AppCompatActivity() {
         binding=ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-        val db = AppDatabase.getDatabase(this)
-        val apiInterface=PostsApi.retrofitService
-        repository=PostsRepository(apiInterface,db,this)
+//        val db = AppDatabase.getDatabase(this)
+//        val apiInterface=PostsApi.retrofitService
+//        repository=PostsRepository(apiInterface,db,this)
+
+        val repository = (application as PostApplication).repository
 
         viewModel= ViewModelProvider(this,PostsFactory(repository)).get(PostsViewModel::class.java)
         binding.recyclerPosts.layoutManager= LinearLayoutManager(this)
@@ -41,6 +43,7 @@ class MainActivity : AppCompatActivity() {
             //binding.progress.visibility= View.GONE
 
             adapter.updateList(it)
+            adapter.notifyDataSetChanged()
             Log.d("Hello", "onCreate: ${it} \n")
             Toast.makeText(this,"Size: "+it.size,Toast.LENGTH_SHORT).show()
 
